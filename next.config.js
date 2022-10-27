@@ -5,12 +5,6 @@ const nextConfig = {
     domains: [
       "encrypted-tbn0.gstatic.com",
       "d1sag4ddilekf6.azureedge.net",
-      "cdn.decorilla.com",
-      "a0.muscache.com",
-      "drive.google.com",
-      "res.cloudinary.com",
-      "ik.imagekit.io",
-      "cdn.discordapp.com",
     ],
   },
 };

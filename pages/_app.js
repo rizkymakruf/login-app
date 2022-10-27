@@ -1,5 +1,4 @@
 import '../styles/globals.css'
-// import "@fortawesome/fontawesome-free/css/all.min.css";
 import { useEffect } from 'react'
 
 import App from 'next/app'

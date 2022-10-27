@@ -37,31 +37,27 @@ export const getServerSideProps = withIronSessionSsr(async function ({ req }) {
 
   const uid = JSON.parse(atob(user.access_token.split(".")[1]));
   const checkUids = await checkUid(uid.user_id);
-  let outlet = [];
-  if (checkUids[0].outlet != "") {
-    outlet = await findOutlet(checkUids[0]?.outlet);
-  }
-  if (checkUids.length < 1) {
-    return redirect("/");
-  }
+  // let outlet = [];
+  // if (checkUids[0].outlet != "") {
+  //   outlet = await findOutlet(checkUids[0]?.outlet);
+  // }
+  // if (checkUids.length < 1) {
+  //   return redirect("/");
+  // }
 
   return retObject({
     isLogin: true,
     fullName: checkUids[0].fullname,
-    adminMode: outlet.length > 0 ? outlet[0]?.shortname : "",
   });
 }, sessionOptions);
 
 const Administration = (props) => {
   const router = useRouter();
-  // console.log(props.fullName);
-  // const [fullname, setfullname] = useState(props.fullName);
 
   const { globalCtx, globalAct } = useContext(GlobalContext);
   useEffect(() => {
     globalAct.setIsFetch(false);
     globalAct.setErrorMsg("");
-    router.prefetch("/config/dashboard");
   }, []);
   {
     /* Default */
@@ -112,11 +108,8 @@ const Administration = (props) => {
                 <div className="w-full h-full relative flex justify-between items-center gap-3">
                   <button
                     onClick={() => {
-                      if (props.adminMode != "") {
-                        router.push(`/dashboard/outlet/${props.adminMode}`);
-                      } else {
-                        router.push("/dashboardSKI");
-                      }
+                        router.push("/dashboard");
+                      
                     }}
                     className="w-full h-auto bg-blue-50 py-2 overflow-hidden rounded border-2 border-blue-500/50 hover:shadow-md"
                   >
@@ -154,11 +147,7 @@ const Administration = (props) => {
                       headers: { "Content-Type": "application/json" },
                       body: JSON.stringify(body),
                     });
-                    if (res.adminMode != "") {
-                      router.push(`/dashboard/outlet/${res.adminMode}`);
-                    } else {
-                      router.push("/dashboardSKI");
-                    }
+                      router.push("/dashboard");
                   } catch (error) {
                     if (error instanceof FetchError) {
                       globalAct.setErrorMsg(error.data.message);
