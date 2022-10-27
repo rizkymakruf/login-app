@@ -6,7 +6,7 @@ import Load from "../../public/img/loading2.gif";
 const LoadingMini = (props) => {
   return (
     <div className="w-full flex items-center justify-center p-10">
-      <Image src={Load} width={100} height={100} />
+      <Image src={Load} width={100} height={100} priority />
     </div>
   );
 };

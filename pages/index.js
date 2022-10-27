@@ -6,10 +6,9 @@ import { withIronSessionSsr } from "iron-session/next";
 import { sessionOptions } from "lib/session";
 import { checkUid, findOutlet } from "lib/arangoDb";
 import { redirect, retObject, checkerToken } from "lib/listFunct";
-import Image from "next/image";
-
 import FormLogin from "components/form/FormLogin";
-import Ilus from "../public/img/ill.png";
+import Image from "next/image";
+import Tropy from "public/img/Thropy.png";
 
 export const getServerSideProps = withIronSessionSsr(async function ({ req }) {
   var user = await req.session.user;
@@ -76,28 +75,12 @@ const Administration = (props) => {
       if (error instanceof FetchError) {
         globalAct.setErrorMsg(error.data.message);
       }
-      // else {
-      //   globalAct.setErrorMsg("An unexpected error happened");
-      // }
     }
     await router.push("/");
   };
 
   return (
-    <div className="w-full grid grid-cols-2 min-h-screen overflow-hidden">
-      <div className="flex w-full items-center justify-center">
-        <div className="absolute z-30 w-2/4">
-          <Image
-            className="w-full"
-            src={Ilus}
-            layout={"responsive"}
-            objectFit={"cover"}
-            width={100}
-            height={100}
-            priority
-          />
-        </div>
-      </div>
+    <div className="w-full min-h-screen overflow-hidden">
       <div className="w-full min-h-screen relative flex flex-row justify-center items-center gap-4">
         <div className="w-96 h-auto relative">
           {props.isLogin ? (
@@ -108,8 +91,7 @@ const Administration = (props) => {
                 <div className="w-full h-full relative flex justify-between items-center gap-3">
                   <button
                     onClick={() => {
-                        router.push("/dashboard");
-                      
+                      router.push("/dashboard");
                     }}
                     className="w-full h-auto bg-blue-50 py-2 overflow-hidden rounded border-2 border-blue-500/50 hover:shadow-md"
                   >
@@ -126,40 +108,53 @@ const Administration = (props) => {
               </div>
             </div>
           ) : (
-            <>
-              <FormLogin
-                // Default Form
-                globalCtx={globalCtx}
-                globalAct={globalAct}
-                onSubmit={async function handleSubmit(e) {
-                  e.preventDefault();
-                  globalAct.setIsFetch(true);
+            <div className="w-full h-screen p-5">
+              {/* image */}
+              <div className="w-full h-2/6 p-10 rounded-md flex justify-center items-center">
+                <Image src={Tropy} priority />
+              </div>
+              {/* headline */}
+              <div className="w-full h-1/6 relative">
+                <div className="flex flex-col absolute">
+                  <p className="text-5xl sm:text-4xl font-">Let's</p>
+                  <p className="text-5xl sm:text-4xl font-">Get started!</p>
+                </div>
+              </div>
+              <div className="w-full h-3/6">
+                <FormLogin
+                  // Default Form
+                  globalCtx={globalCtx}
+                  globalAct={globalAct}
+                  onSubmit={async function handleSubmit(e) {
+                    e.preventDefault();
+                    globalAct.setIsFetch(true);
 
-                  const body = {
-                    username: e.currentTarget.username.value,
-                    password: e.currentTarget.password.value,
-                    uri: "login",
-                  };
+                    const body = {
+                      username: e.currentTarget.username.value,
+                      password: e.currentTarget.password.value,
+                      uri: "login",
+                    };
 
-                  try {
-                    const res = await fetchJson("/api/post", {
-                      method: "POST",
-                      headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify(body),
-                    });
+                    try {
+                      const res = await fetchJson("/api/post", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(body),
+                      });
                       router.push("/dashboard");
-                  } catch (error) {
-                    if (error instanceof FetchError) {
-                      globalAct.setErrorMsg(error.data.message);
-                    } else {
-                      globalAct.setErrorMsg("An unexpected error happened");
+                    } catch (error) {
+                      if (error instanceof FetchError) {
+                        globalAct.setErrorMsg(error.data.message);
+                      } else {
+                        globalAct.setErrorMsg("An unexpected error happened");
+                      }
                     }
-                  }
 
-                  globalAct.setIsFetch(false);
-                }}
-              />
-            </>
+                    globalAct.setIsFetch(false);
+                  }}
+                />
+              </div>
+            </div>
           )}
         </div>
       </div>
