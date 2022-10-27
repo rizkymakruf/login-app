@@ -1,7 +1,9 @@
+import { useRouter } from "next/router";
 import { useState, memo } from "react";
 
 const FormLogin = ({ myRef, globalCtx, globalAct, onSubmit }) => {
   const [formType, setFormType] = useState(false);
+  const router = useRouter();
   return (
     <div className="w-full">
       <div className="w-full h-2/6">
@@ -55,7 +57,7 @@ const FormLogin = ({ myRef, globalCtx, globalAct, onSubmit }) => {
                   Login
                 </button>
               </div>
-              <div className="w-full h-full flex items-center text-xs text-red-400 py-3">
+              <div className="w-full h-full flex items-center text-xs text-red-400 pt-3">
                 {globalCtx.errorMsg}
               </div>
               <div className="w-full flex justify-center items-center gap-1">
@@ -67,12 +69,18 @@ const FormLogin = ({ myRef, globalCtx, globalAct, onSubmit }) => {
                   <hr />
                 </div>
               </div>
-              <div className="w-full flex justify-center items-center pb-2">
-                <button>Register?</button>
-              </div>
             </div>
           </div>
         </form>
+        <div className="w-full flex justify-center items-center pt-2">
+          <button
+            onClick={() => {
+              router.replace("/register");
+            }}
+          >
+            Register?
+          </button>
+        </div>
       </div>
     </div>
   );
